@@ -47,7 +47,7 @@ class MyGUICalculator:
     self.btn9.grid(row=0, column=2, sticky=tk.W+tk.E)
     self.btn_Del = tk.Button(self.buttonFrame, text="Del", font=('Arial', 18), command=self.SymDel)
     self.btn_Del.grid(row=0, column=3, sticky=tk.W+tk.E)
-    self.btn_Ac = tk.Button(self.buttonFrame, text="Ac", font=('Arial', 18), command=self.SymAc)
+    self.btn_Ac = tk.Button(self.buttonFrame, text="AC", font=('Arial', 18), command=self.SymAC)
     self.btn_Ac.grid(row=0, column=4, sticky=tk.W+tk.E)
     #row2
     self.btn4 = tk.Button(self.buttonFrame, text="4", font=('Arial', 18), command=self.Num4)
@@ -95,26 +95,30 @@ class MyGUICalculator:
   # Show Frame Def's
   def show_CAL(self):
     pass
+  #main Cal
+  def CAL(self, input):
+    print(input)
   #button Frame Def's-number
-  def Num1():
+  def Num1(self):
+    self.CAL(1)
+    
+  def Num2(self):
     pass
-  def Num2():
+  def Num3(self):
     pass
-  def Num3():
+  def Num4(self):
     pass
-  def Num4():
+  def Num5(self):
     pass
-  def Num5():
+  def Num6(self):
     pass
-  def Num6():
+  def Num7(self):
     pass
-  def Num7():
+  def Num8(self):
     pass
-  def Num8():
+  def Num9(self):
     pass
-  def Num9():
-    pass
-  def Num0():
+  def Num0(self):
     pass
   
   #button Frame Def's-symble
@@ -130,7 +134,7 @@ class MyGUICalculator:
     pass
   def SymSubtract(self):
     pass
-  def SymDot():
+  def SymDot(self):
     pass
   def SymX10(self):
     pass
@@ -139,8 +143,10 @@ class MyGUICalculator:
   def SymEqual(self):
     pass
   
-  #main Cal
-  def CAL(self, input):
-    pass
+  
+
+  def myclick(self):
+    print('hi hi hi')
+  
 
 MyGUICalculator()

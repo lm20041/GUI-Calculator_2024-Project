@@ -9,7 +9,7 @@ class MyGUICalculator:
     self.label = tk.Label(self.root, text="Cal!", font=('Arial', 18))
     self.label.pack(padx=20, pady=10)
     #def
-    
+
     ##--- menu Line ----
     self.menubar = tk.Menu(self.root)
     self.filemenu = tk.Menu(self.menubar, tearoff=0)
@@ -18,17 +18,17 @@ class MyGUICalculator:
     self.filemenu.add_command(label="Close without Question", command=exit) #
     self.filemenu.add_separator()
     self.filemenu.add_command(label="show Messagebox", command=self.ShowMessagebox)
-    
+
     self.switch_screen = tk.Menu(self.menubar, tearoff=0)
     self.switch_screen.add_command(label="Program", command=self.SwitchScreens)
     self.switch_screen.add_separator()
     self.switch_screen.add_command(label="main", command=self.SwitchScreens)
     self.switch_screen.add_separator()
     self.switch_screen.add_command(label="Note", command=self.SwitchScreens)
-    
+
     self.menubar.add_cascade(menu=self.filemenu, label="File")
     self.menubar.add_cascade(menu=self.switch_screen, label="Switch Screens")
-    
+
     self.root.config(menu=self.menubar)
     ##textbox
     self.textbox = tk.Text(self.root, height=3, font=('Arial', 16))
@@ -84,14 +84,12 @@ class MyGUICalculator:
     self.btn_Equal.grid(row=3, column=4, sticky=tk.W+tk.E) 
     #row5 (empty row)
     self.buttonFrame.pack(fill='x')
-    
+
     self.root.mainloop()
-  def Error(self):
-    messagebox.showerror(title="Error", message="Something went wrong")
   #TabBars Frame Def's
   def ShowMessagebox(self):
     pass
-    
+
   def SwitchScreens(self):
     pass
   ##Main cal
@@ -107,97 +105,110 @@ class MyGUICalculator:
   #stages of the CAL
   def Terms(self, input):
     print(input)
-    operator = ['+', '-', '*', '/']
-    equation = ['']  # Initialize equation[term] as an empty string
+    operator = ['+', '-', '*', '/', 'X10']
+    equation = []
     term = 0
-    # Input variables in terms
-    if isinstance(input, int):
-      equation[term] += str(input)  # Convert input to string before concatenation
-    elif input == '.' and '.' not in equation[term]:
+    #input variables in terms
+    if input == int: # <add on
       equation[term] += input
-    elif input in operator:  # <(+, -, *, /)
+    elif input == '.' and input not in equation[term]:
+      equation[term] += input
+    elif input in operator: # <(+, -, *, /, X10)
       if equation[term] != "":
-        equation[term] = float(equation[term])  # Convert to float
-        term += 1  # <next value-term
-        equation.append(input)  # Append input to equation
+        term += 1 # <next vaule-term
+        equation[term] = input
       else:
-        equation[term] += input
-    elif input == "Del":  # <clear out term
-      equation[term] = ''  # Set equation[term] to an empty string
-    elif input == "Ac":  # <clear out all
-      equation.clear()
-    else:
-      self.Error()
+        equation[term] = input
+    elif input == "Del": # <clear out term
+      equation[term] = ""
+    elif input == "Ac": # <clear out all
+      equation = []
+    elif input == "Ans":
+      pass
     return equation
-
   def CAL(self, input): 
-    if input != "=":  # <-------------Ans
+    if input != "=":
       InOrder = self.Terms(input)
       print(InOrder)
     else:
       while len(InOrder) > 1:
-        if "+" in InOrder[2]:
-          InOrder[1] += float(InOrder[3])  # Convert to float before addition
-          InOrder = InOrder[:2] + InOrder[4:]  # Remove used elements from InOrder
-        elif "-" in InOrder[2]:
-          InOrder[1] -= float(InOrder[3])  # Convert to float before subtraction
-          InOrder = InOrder[:2] + InOrder[4:]  # Remove used elements from InOrder
-        elif "*" in InOrder[2]:
-          InOrder[1] *= float(InOrder[3])  # Convert to float before multiplication
-          InOrder = InOrder[:2] + InOrder[4:]  # Remove used elements from InOrder
-        elif "/" in InOrder[2]:
-          InOrder[1] /= float(InOrder[3])  # Convert to float before division
-          InOrder = InOrder[:2] + InOrder[4:]  # Remove used elements from InOrder
-        else:
-          self.Error()
-      Ans = InOrder[1]
-      self.show_CAL(Ans)  # Use self.show_CAL(result)
-    
+        if InOrder[0] == float(InOrder[0]) and InOrder[1] == str(InOrder[1]) and InOrder[2] == float(InOrder[2]):
+          if InOrder[1] == "+":
+            result = InOrder[0] + InOrder[2])
+          elif InOrder[1] == "-":
+            result = InOrder[0] - InOrder[2])
+          elif InOrder[1] == "*":
+            result = InOrder[0] * InOrder[2])
+          elif InOrder[1] == "/":
+            result = InOrder[0] / InOrder[2])
+          elif InOrder[1] == "X10":
+            result = InOrder[0] ** InOrder[2])
+          InOrder.insert(InOrder[2], result)
+          InOrder.remove(InOrder[0], InOrder[1], InOrder[2])
+        elif InOrder[0] == str(InOrder[0]) and InOrder[1] == float(InOrder[1]) and InOrder[2] == str(InOrder[2]) and InOrder[3] == float(InOrder[3]):
+          if InOrder[0] == "+" and InOrder[2] == "+":
+            result = InOrder[1] + InOrder[3])
+          elif InOrder[0] == "+" and InOrder[2] == "-":
+            result = InOrder[1] - InOrder[3])
+          elif InOrder[0] == "-" and InOrder[2] == "+":
+            result = -InOrder[1] + InOrder[3])
+          elif InOrder[0] == "-" and InOrder[2] == "-":
+            result = -InOrder[1] - InOrder[3])
+
+          elif InOrder[0] == "-" and InOrder[3] == "*":
+            result = InOrder[0] * InOrder[2])
+          elif InOrder[0] == "-" and InOrder[3] == "/":
+            result = InOrder[0] / InOrder[2])
+          InOrder.insert(InOrder[3], result)
+          InOrder.remove(InOrder[0], InOrder[1], InOrder[2], InOrder[3])
+      show_CAL(result)
+
   #button Frame Def's-number
   def Num1(self):
     self.CAL(1)
+
   def Num2(self):
-    self.CAL(2)
+    pass
   def Num3(self):
-    self.CAL(3)
+    pass
   def Num4(self):
-    self.CAL(4)
+    pass
   def Num5(self):
-    self.CAL(5)
+    pass
   def Num6(self):
-    self.CAL(6)
+    pass
   def Num7(self):
-    self.CAL(7)
+    pass
   def Num8(self):
-    self.CAL(8)
+    pass
   def Num9(self):
-    self.CAL(9)
+    pass
   def Num0(self):
-    self.CAL(0)
-  
+    pass
+
   #button Frame Def's-symble
   def SymDel(self):
-    self.CAL("Del")
+    pass
   def SymAC(self):
     self.textbox.delete('1.0', tk.END)
   def SymTime(self):
-    self.CAL("*")
+    pass
   def SymDivide(self):
-    self.CAL("/")
+    pass
   def SymAdd(self):
-    self.CAL("+")
+    pass
   def SymSubtract(self):
-    self.CAL("-")
+    pass
   def SymDot(self): 
-    self.CAL(".")
+    pass
   def SymX10(self):
     pass
   def SymAns(self):
-    self.CAL("Ans")
+    pass
   def SymEqual(self):
-    self.CAL("=")
-  
+    pass
+
   def myclick(self):
     print('hi hi hi')
-  
+
 MyGUICalculator()
